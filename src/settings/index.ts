@@ -6,7 +6,7 @@ const assetsUrl = `${location.protocol}//${location.host}`.replace(/\/$/, "");
  */
 export const webSetting = {
     /* 后端接口地址（必填） */
-    serviceUrl: "http://www.egova.top:2133",
+    serviceUrl: "http://localhost:3000",
 
     /* 前端包路径（必填，如果在根路径下可不填）*/
     assetsUrl,
