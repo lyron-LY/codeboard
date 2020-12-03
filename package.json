@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "server": "node koa/main.js",
+    "service": "node koa/main.js",
     "check": "http-server ./dist -a 127.0.0.1 -p 5050 -g -o -s",
     "lint": "vue-cli-service lint"
   },
