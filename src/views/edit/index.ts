@@ -25,42 +25,44 @@ export default class Edit extends Vue {
 
     public mounted() {
         this.htmlEditor = monaco.editor.create((<any>this.$refs).htmlEditor, {
-            value: "<div class='ceshi'>ceshi</div>",
+            value: "<div id='app'>ceshi</div>",
             language: "html"
         });
         this.scssEditor = monaco.editor.create((<any>this.$refs).scssEditor, {
-            value: "body{color:'#000';.ceshi {color: red;}}",
+            value: "body{color:'#000';#app {color: red;}}",
             language: "scss"
         });
-        this.tsEditor = monaco.editor.create((<any>this.$refs).tsEditor, {
-            value: "console.log('Hello world!');",
-            language: "typescript"
-        });
-        monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
-            ...monaco.languages.typescript.typescriptDefaults.getCompilerOptions(),
-            target: monaco.languages.typescript.ScriptTarget.ES5
-        });
-        // this.jsinstanse = monaco.editor.create((<any>this.$refs).jsEditor, {
-        //     value: "console.log('Hello world!');",
-        //     language: "javascript"
+        // this.tsEditor = monaco.editor.create((<any>this.$refs).tsEditor, {
+        //     value: "import Vue from 'https://cdn.skypack.dev/vue';\nconsole.log('Hello world!', Vue);",
+        //     language: "typescript"
         // });
+        // monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+        //     ...monaco.languages.typescript.typescriptDefaults.getCompilerOptions(),
+        //     target: monaco.languages.typescript.ScriptTarget.ES5
+        // });
+
+        this.jsEditor = monaco.editor.create((<any>this.$refs).tsEditor, {
+            value: "import Vue from 'https://cdn.skypack.dev/vue';\nconsole.log('Hello world!', Vue);",
+            language: "javascript"
+        });
     }
 
     public async transform() {
         const css = await this.service.getCss(this.scssEditor.getValue());
         // console.log(monaco.languages.css.scssDefaults);
-        monaco.languages.typescript.getTypeScriptWorker().then(worker => {
-            worker(this.tsEditor.getModel()?.uri as any)
-                .then(client => client.getEmitOutput(this.tsEditor.getModel()?.uri.toString() as string))
-                .then(res => {
+        // monaco.languages.typescript.getTypeScriptWorker().then(worker => {
+        //     worker(this.tsEditor.getModel()?.uri as any)
+        //         .then(client => client.getEmitOutput(this.tsEditor.getModel()?.uri.toString() as string))
+        //         .then(res => {
                     this.createIframe({
                         html: this.htmlEditor.getValue(),
                         css: css,
-                        js: res.outputFiles[0].text
+                        // js: res.outputFiles[0].text
+                        js: this.jsEditor.getValue()
                     });
-                    // this.jsinstanse.setValue(res.outputFiles[0].text);
-                });
-        });
+        //             // this.jsinstanse.setValue(res.outputFiles[0].text);
+        //         });
+        // });
     }
 
     public createIframe(options: { html?: string; css?: string; js?: string }) {
@@ -71,6 +73,7 @@ export default class Edit extends Vue {
         let iframeWindow = this.iframe.contentWindow;
 
         let script = iframedocument.createElement("script");
+        script.type = "module";
         script.innerHTML = options.js || "";
         let style = iframedocument.createElement("style");
         style.innerHTML = options.css || "";
