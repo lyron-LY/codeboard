@@ -14,7 +14,7 @@
     "halo-math": "^1.0.9",
     "js-cookie": "^2.2.1",
     "mockjs": "^1.1.0",
-    "moment": "^2.25.1",
+    "moment": "^2.29.2",
     "monaco-editor": "^0.20.0",
     "normalize.css": "^8.0.1",
     "koa": "^2.12.0",
